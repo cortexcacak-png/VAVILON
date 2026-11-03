@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vavilon Sala | Čačak</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:#FEFDFB;color:#2A2318;font-family:'Jost',sans-serif;overflow-x:hidden;cursor:none;}
+
+:root{
+  --ivory:#FEFDFB;
+  --cream:#F8F3EA;
+  --parchment:#F0E8D8;
+  --gold:#C4943A;
+  --gold-light:#E8C97A;
+  --gold-pale:#F5EDD8;
+  --gold-dark:#9A7228;
+  --charcoal:#2A2318;
+  --brown:#6B5430;
+  --muted:#9B8C78;
+  --border:rgba(196,148,58,0.2);
+  --border-strong:rgba(196,148,58,0.45);
+  --shadow:0 4px 40px rgba(196,148,58,0.08);
+  --shadow-lg:0 20px 80px rgba(196,148,58,0.14);
+}
+
+/* ═══════════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════════ */
+#cur{position:fixed;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;}
+#cur2{position:fixed;width:34px;height:34px;border:1px solid rgba(196,148,58,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s,opacity .25s;}
+#cur2.big{width:58px;height:58px;border-color:var(--gold);}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  padding:28px 64px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:padding .4s,background .4s,box-shadow .4s;
+}
+#nav.scrolled{
+  padding:16px 64px;
+  background:rgba(254,253,251,.96);
+  backdrop-filter:blur(20px);
+  box-shadow:0 1px 0 var(--border);
+}
+.nav-brand{display:flex;flex-direction:column;text-decoration:none;}
+.nav-brand-main{font-family:'Playfair Display',serif;font-size:20px;color:rgba(250,228,150,0.98);letter-spacing:.04em;text-shadow:0 3px 14px rgba(243,214,139,0.28);}
+.nav-brand-sub{font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.55em;color:rgba(250,228,150,0.95);text-transform:uppercase;margin-top:2px;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-size:14px;letter-spacing:.28em;text-transform:uppercase;color:rgba(250,228,150,0.95);text-decoration:none;transition:color .2s ease,transform .2s ease,text-shadow .2s ease;font-weight:500;display:inline-block;animation:navFloat 7s ease-in-out infinite alternate;}
+.nav-links a:hover{color:#fef1b8;transform:scale(1.1) translateY(-2px);text-shadow:0 5px 20px rgba(250,228,150,0.35);}
+.nav-right{display:flex;align-items:center;gap:20px;}
+.nav-reserve{
+  font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  border:1px solid rgba(250,228,150,0.95);color:rgba(250,228,150,0.95);padding:11px 26px;
+  text-decoration:none;transition:color .25s ease,background .25s ease,transform .25s ease,text-shadow .25s ease;font-weight:400;
+}
+.nav-reserve:hover{background:#f8e2a7;color:#2A2318;transform:scale(1.04) translateY(-1px);text-shadow:0 6px 18px rgba(243,214,139,0.25);border-color:#f8e2a7;}
+.nav-admin-btn{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .3s;font-weight:300;
+  border-left:1px solid var(--border);padding-left:20px;
+}
+.nav-admin-btn:hover{color:var(--gold);}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.hero{
+  min-height:100svh;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-vid{
+  position:absolute;inset:-2% -3% -2% -3%;
+  width:106%;height:104%;
+  min-width:106%;min-height:104%;
+  object-fit:cover;object-position:center center;
+  display:block;z-index:1;
+  transform:scale(1.04);
+}
+.hero-overlay{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(
+    160deg,
+    rgba(12,12,12,0.72) 0%,
+    rgba(12,12,12,0.35) 50%,
+    rgba(196,148,58,0.16) 100%
+  );
+}
+.hero-content{
+  position:relative;z-index:3;
+  text-align:center;max-width:960px;padding:0 clamp(20px, 5vw, 40px);
+}
+.hero-kicker{
+  font-size:11px;letter-spacing:.6em;text-transform:uppercase;
+  color:#F5D38A;margin-bottom:36px;display:block;
+  opacity:0;animation:fadeUp .9s .4s forwards;
+}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(56px,9vw,132px);
+  font-weight:400;line-height:.92;
+  color:#FFFDF8;letter-spacing:-.01em;
+  text-shadow:0 4px 24px rgba(0,0,0,0.3);
+  opacity:0;animation:fadeUp 1.1s .7s forwards;
+}
+.hero-title em{font-style:italic;color:#F8D98A;}
+.hero-rule{
+  display:flex;align-items:center;gap:16px;
+  justify-content:center;margin:clamp(20px, 4vw, 40px) auto;
+  opacity:0;animation:fadeUp .8s 1s forwards;
+}
+.hr-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
+.hr-line:last-child{background:linear-gradient(90deg,var(--gold),transparent);}
+.hr-diamond{width:8px;height:8px;border:1px solid var(--gold);transform:rotate(45deg);}
+.hero-sub{
+  font-family:'Cormorant',serif;font-style:italic;
+  font-size:clamp(16px,2.2vw,24px);color:rgba(255,255,255,0.9);
+  line-height:1.7;max-width:560px;margin:0 auto clamp(30px, 5vw, 48px);
+  opacity:0;animation:fadeUp 1s 1.1s forwards;
+}
+.hero-ctas{
+  display:flex;gap:16px;justify-content:center;
+  opacity:0;animation:fadeUp .9s 1.3s forwards;
+  flex-wrap: wrap;
+}
+.btn-gold{
+  display:inline-block;background:#F3D68B;color:#2A2318;
+  padding:18px 48px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  text-decoration:none;transition:all .35s;position:relative;overflow:hidden;
+  font-weight:500; border:1px solid #F3D68B;
+}
+.btn-gold::after{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+  transition:left .5s;
+}
+.btn-gold:hover::after{left:100%;}
+.btn-gold:hover{background:#F9E0A3;color:#1F1A12;transform:translateY(-2px); border-color:#F9E0A3;}
+.btn-outline{
+  display:inline-block;border:1px solid rgba(255,255,255,0.8);color:white;
+  padding:17px 48px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  text-decoration:none;transition:all .3s;font-weight:400;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+.hero-scroll{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp .7s 2s forwards;z-index:3;
+}
+.hs-label{font-size:9px;letter-spacing:.5em;color:rgba(255,255,255,.7);text-transform:uppercase;}
+.hs-line{width:1px;height:52px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollDrop 1.8s ease-in-out infinite;}
+@keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+@keyframes navFloat{0%{transform:translateY(0);}100%{transform:translateY(-4px);}}
+
+/* ═══════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════ */
+.stats{
+  background:var(--charcoal);
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.stat{
+  padding:44px 24px;text-align:center;
+  border-right:1px solid rgba(255,255,255,.06);
+  transition:background .3s;
+}
+.stat:last-child{border-right:none;}
+.stat:hover{background:rgba(196,148,58,.08);}
+.stat-n{
+  font-family:'Playfair Display',serif;font-size:48px;font-weight:400;line-height:1;
+  color:var(--gold-light);
+}
+.stat-l{font-size:9px;letter-spacing:.4em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-top:8px;}
+
+/* ═══════════════════════════════════════════════
+   SECTION COMMON
+═══════════════════════════════════════════════ */
+.section-tag{font-size:9px;letter-spacing:.6em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:16px;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,58px);font-weight:400;line-height:1.1;color:var(--charcoal);}
+.section-title em{font-style:italic;color:var(--gold);}
+.section-rule{width:48px;height:1px;background:var(--gold);margin-top:20px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal.d1{transition-delay:.1s;}.reveal.d2{transition-delay:.2s;}.reveal.d3{transition-delay:.3s;}.reveal.d4{transition-delay:.4s;}
+
+/* ═══════════════════════════════════════════════
+   ABOUT / STORY
+═══════════════════════════════════════════════ */
+.about{padding:120px 80px;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;max-width:1380px;margin:0 auto;}
+.about-imgs{position:relative;height:580px;}
+.about-img1{
+  position:absolute;top:0;left:0;width:72%;height:82%;
+  background:url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80') center/cover;
+  box-shadow:var(--shadow-lg);
+}
+.about-img2{
+  position:absolute;bottom:0;right:0;width:55%;height:55%;
+  background:url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80') center/cover;
+  box-shadow:var(--shadow-lg);
+  border:6px solid var(--ivory);
+}
+.about-badge{
+  position:absolute;top:50%;left:60%;transform:translate(-50%,-50%);
+  width:110px;height:110px;border-radius:50%;
+  background:var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  box-shadow:0 8px 40px rgba(196,148,58,.35);
+  z-index:3;
+}
+.ab-year{font-size:24px;color:white;font-weight:400;line-height:1;}
+.ab-est{font-size:8px;letter-spacing:.3em;color:rgba(255,255,255,.75);text-transform:uppercase;margin-top:3px;}
+.about-text{}
+.about-text p{font-size:15px;line-height:1.95;color:var(--muted);margin-bottom:24px;}
+.about-text strong{color:var(--charcoal);font-weight:400;}
+.about-features{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:44px;}
+.af{background:var(--ivory);padding:22px 20px;}
+.af h4{font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.af p{font-size:13px;color:var(--brown);line-height:1.5;}
+
+/* ═══════════════════════════════════════════════
+   SPACES / VENUES
+═══════════════════════════════════════════════ */
+.venues{background:var(--cream);padding:120px 80px;}
+.venues-inner{max-width:1380px;margin:0 auto;}
+.venues-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:70px;}
+.venue-card{position:relative;overflow:hidden;aspect-ratio:4/3;cursor:pointer;}
+.venue-card:first-child{grid-row:span 2;aspect-ratio:auto;}
+.vc-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s ease;}
+.venue-card:hover .vc-img{transform:scale(1.06);}
+.vc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(42,35,24,.92) 0%,rgba(42,35,24,.2) 50%,transparent 100%);transition:all .4s;}
+.venue-card:hover .vc-overlay{background:linear-gradient(to top,rgba(42,35,24,.95) 0%,rgba(42,35,24,.35) 60%,transparent 100%);}
+.vc-info{position:absolute;bottom:0;left:0;right:0;padding:36px;}
+.vc-name{font-family:'Playfair Display',serif;font-size:26px;color:white;font-weight:400;margin-bottom:6px;}
+.vc-cap{font-size:10px;letter-spacing:.35em;color:var(--gold-light);text-transform:uppercase;}
+.vc-desc{font-size:13px;color:rgba(255,255,255,.65);margin-top:10px;line-height:1.6;max-height:0;overflow:hidden;transition:max-height .5s,opacity .4s;opacity:0;}
+.venue-card:hover .vc-desc{max-height:100px;opacity:1;}
+
+/* ═══════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════ */
+.services{padding:120px 80px;}
+.services-inner{max-width:1380px;margin:0 auto;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:70px;}
+.svc{background:var(--ivory);padding:52px 44px;position:relative;overflow:hidden;transition:background .4s;}
+.svc::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.svc:hover{background:white;}
+.svc:hover::before{transform:scaleX(1);}
+.svc-icon{font-size:32px;margin-bottom:28px;display:block;}
+.svc-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:var(--charcoal);margin-bottom:14px;}
+.svc-t{font-size:13px;line-height:1.85;color:var(--muted);}
+.svc-num{
+  position:absolute;top:36px;right:36px;
+  font-family:'Playfair Display',serif;font-size:60px;font-weight:400;
+  color:rgba(196,148,58,.06);line-height:1;
+  transition:color .4s;
+}
+.svc:hover .svc-num{color:rgba(196,148,58,.12);}
+
+/* ═══════════════════════════════════════════════
+   WEDDINGS SPECIAL
+═══════════════════════════════════════════════ */
+.wedding{
+  padding:120px 80px;
+  background:var(--charcoal);
+  position:relative;overflow:hidden;
+}
+.wedding::before{
+  content:'';position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80') center/cover;
+  opacity:.12;
+}
+.wedding-inner{max-width:1380px;margin:0 auto;position:relative;z-index:2;}
+.wedding-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:80px;align-items:center;}
+.wedding-text .section-tag{color:var(--gold-light);}
+.wedding-text .section-title{color:white;}
+.wedding-text .section-rule{background:var(--gold-light);}
+.wedding-text p{font-size:15px;line-height:1.95;color:rgba(255,255,255,.55);margin:24px 0;}
+.wedding-packages{display:flex;flex-direction:column;gap:2px;margin-top:40px;}
+.wp{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  padding:24px 28px;display:flex;align-items:center;justify-content:space-between;
+  transition:all .3s;cursor:pointer;
+}
+.wp:hover{background:rgba(196,148,58,.12);border-color:rgba(196,148,58,.3);}
+.wp-name{font-family:'Playfair Display',serif;font-size:18px;color:white;font-weight:400;}
+.wp-cap{font-size:10px;letter-spacing:.3em;color:var(--gold-light);text-transform:uppercase;margin-top:3px;}
+.wp-arrow{color:var(--gold-light);font-size:18px;transition:transform .3s;}
+.wp:hover .wp-arrow{transform:translateX(6px);}
+.wedding-visual{position:relative;}
+.wv-img1{
+  width:100%;aspect-ratio:3/4;
+  background:url('https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=800&q=80') center/cover;
+}
+.wv-quote{
+  position:absolute;bottom:-30px;left:-30px;
+  background:var(--gold);color:white;padding:36px;
+  max-width:280px;
+}
+.wv-q{font-family:'Cormorant',serif;font-style:italic;font-size:17px;line-height:1.6;}
+.wv-a{font-size:9px;letter-spacing:.3em;text-transform:uppercase;margin-top:12px;opacity:.75;}
+
+/* ═══════════════════════════════════════════════
+   EVENTS
+═══════════════════════════════════════════════ */
+.events{background:var(--cream);padding:120px 80px;}
+.events-inner{max-width:1380px;margin:0 auto;}
+.events-list{margin-top:70px;display:flex;flex-direction:column;gap:1px;}
+.event{
+  display:grid;grid-template-columns:100px 1fr auto;
+  gap:40px;align-items:center;
+  background:var(--ivory);padding:32px 40px;
+  border:1px solid transparent;
+  transition:all .35s;position:relative;overflow:hidden;
+}
+.event::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .35s;
+}
+.event:hover{border-color:var(--border-strong);background:white;transform:translateX(4px);}
+.event:hover::before{transform:scaleY(1);}
+.event-d{text-align:center;}
+.event-day{font-family:'Playfair Display',serif;font-size:42px;color:var(--gold);font-weight:400;line-height:1;}
+.event-mo{font-size:9px;letter-spacing:.35em;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.event-h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--charcoal);font-weight:400;margin-bottom:6px;}
+.event-p{font-size:12px;color:var(--muted);letter-spacing:.05em;}
+.event-tag{
+  font-size:9px;letter-spacing:.3em;border:1px solid var(--border-strong);
+  color:var(--gold);padding:8px 18px;text-transform:uppercase;white-space:nowrap;
+}
+
+/* ═══════════════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════════════ */
+.gallery{padding:120px 80px;}
+.gallery-inner{max-width:1380px;margin:0 auto;}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-auto-rows:220px;
+  gap:4px;margin-top:70px;
+}
+.gi{overflow:hidden;position:relative;}
+.gi:nth-child(1){grid-column:span 5;grid-row:span 2;}
+.gi:nth-child(2){grid-column:span 4;}
+.gi:nth-child(3){grid-column:span 3;}
+.gi:nth-child(4){grid-column:span 3;}
+.gi:nth-child(5){grid-column:span 4;}
+.gi:nth-child(6){grid-column:span 5;}
+.gi:nth-child(7){grid-column:span 4;}
+.gi:nth-child(8){grid-column:span 3;}
+.gi-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s ease;}
+.gi:hover .gi-bg{transform:scale(1.08);}
+.gi-veil{position:absolute;inset:0;background:rgba(42,35,24,0);transition:background .4s;}
+.gi:hover .gi-veil{background:rgba(42,35,24,.35);}
+.gi-plus{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:28px;opacity:0;transition:opacity .4s;
+}
+.gi:hover .gi-plus{opacity:1;}
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════════ */
+.testi{background:var(--parchment);padding:120px 80px;overflow:hidden;}
+.testi-inner{max-width:1200px;margin:0 auto;}
+.testi-slider{position:relative;margin-top:70px;}
+.testi-track{display:flex;transition:transform .6s cubic-bezier(.4,0,.2,1);}
+.testi-card{
+  min-width:100%;
+  background:white;padding:68px;position:relative;
+}
+.testi-quote{
+  font-family:'Playfair Display',serif;font-size:100px;
+  color:rgba(196,148,58,.12);position:absolute;top:20px;left:40px;line-height:1;
+  font-weight:400;
+}
+.testi-text{
+  font-family:'Cormorant',serif;font-style:italic;
+  font-size:22px;line-height:1.75;color:var(--charcoal);
+  position:relative;z-index:1;margin-bottom:36px;
+}
+.testi-author{display:flex;align-items:center;gap:16px;}
+.ta-av{
+  width:50px;height:50px;border-radius:50%;background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:18px;color:white;
+}
+.ta-name{font-size:14px;color:var(--charcoal);font-weight:400;}
+.ta-meta{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.05em;}
+.testi-stars{color:var(--gold);font-size:13px;letter-spacing:3px;margin-bottom:24px;}
+.testi-nav{display:flex;gap:10px;justify-content:center;margin-top:40px;}
+.tn-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);cursor:pointer;transition:all .3s;}
+.tn-dot.on{background:var(--gold);width:22px;border-radius:3px;}
+
+/* ═══════════════════════════════════════════════
+   CONTACT & BOOKING
+═══════════════════════════════════════════════ */
+.contact{padding:120px 80px;}
+.contact-inner{max-width:1380px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;}
+.ci-info h2{font-family:'Playfair Display',serif;font-size:48px;font-weight:400;line-height:1.15;color:var(--charcoal);margin:16px 0 24px;}
+.ci-info h2 em{font-style:italic;color:var(--gold);}
+.ci-info p{font-size:15px;line-height:1.9;color:var(--muted);margin-bottom:44px;}
+.ci-details{display:flex;flex-direction:column;gap:20px;}
+.ci-d{display:flex;align-items:flex-start;gap:18px;}
+.ci-icon{
+  width:42px;height:42px;border:1px solid var(--border-strong);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  background:var(--cream);
+}
+.ci-d h4{font-size:9px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
+.ci-d p{font-size:14px;color:var(--brown);line-height:1.5;}
+.ci-d a{color:var(--brown);text-decoration:none;}
+.ci-d a:hover{color:var(--gold);}
+
+.booking{background:var(--charcoal);padding:52px;}
+.booking-title{font-family:'Playfair Display',serif;font-size:22px;color:white;font-weight:400;margin-bottom:36px;}
+.fg{margin-bottom:20px;}
+.fg label{display:block;font-size:9px;letter-spacing:.4em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:10px;}
+.fg input,.fg select,.fg textarea{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  color:white;padding:14px 16px;font-family:'Jost',sans-serif;font-size:14px;
+  outline:none;transition:border-color .3s;-webkit-appearance:none;border-radius:0;
+}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.2);}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);}
+.fg select option{background:#2A2318;color:white;}
+.fg textarea{resize:vertical;min-height:90px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.btn-submit{
+  width:100%;background:var(--gold);color:white;border:none;
+  padding:18px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.35em;
+  text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;font-weight:400;
+}
+.btn-submit:hover{background:var(--gold-dark);}
+
+/* ═══════════════════════════════════════════════
+   LOCATION
+═══════════════════════════════════════════════ */
+.location{padding:0 80px 120px;}
+.location-inner{max-width:1380px;margin:0 auto;}
+.loc-bar{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--charcoal);margin-bottom:4px;
+}
+.lb{padding:28px 32px;border-right:1px solid rgba(255,255,255,.06);}
+.lb:last-child{border-right:none;}
+.lb-l{font-size:9px;letter-spacing:.4em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:8px;}
+.lb-v{font-family:'Playfair Display',serif;font-size:16px;color:white;font-weight:400;}
+.map-wrap{
+  height:420px;position:relative;overflow:hidden;
+  background:var(--cream);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+}
+.map-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1549180030-48bf079fb38a?w=1200&q=80') center/cover;
+  opacity:.25;
+}
+.map-grid-lines{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(196,148,58,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(196,148,58,.08) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.map-pin-wrap{position:relative;z-index:2;text-align:center;}
+.map-pin{font-size:44px;animation:pinBounce 2.5s ease-in-out infinite;}
+@keyframes pinBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.map-lbl{margin-top:14px;}
+.map-lbl h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--charcoal);}
+.map-lbl p{font-size:12px;color:var(--muted);margin-top:4px;}
+.map-lbl a{color:var(--gold);text-decoration:none;font-size:11px;letter-spacing:.2em;display:block;margin-top:12px;}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{background:var(--charcoal);padding:80px;border-top:1px solid rgba(255,255,255,.06);}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px;}
+.fb h3{font-family:'Playfair Display',serif;font-size:22px;color:white;margin-bottom:14px;}
+.fb p{font-size:13px;color:rgba(255,255,255,.3);line-height:1.8;max-width:260px;}
+.fb-social{display:flex;gap:10px;margin-top:22px;}
+.fsoc{
+  width:38px;height:38px;border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.3);text-decoration:none;font-size:14px;
+  transition:all .3s;
+}
+.fsoc:hover{border-color:var(--gold);color:var(--gold-light);}
+.fc h4{font-size:9px;letter-spacing:.45em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fc a{font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .3s;}
+.fc a:hover{color:white;}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:32px;}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2);}
+.footer-bottom span{color:var(--gold);}
+
+/* ═══════════════════════════════════════════════
+   TICKER
+═══════════════════════════════════════════════ */
+.ticker{background:var(--gold);padding:16px 0;overflow:hidden;}
+.ticker-t{display:flex;gap:60px;white-space:nowrap;animation:tick 22s linear infinite;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ti{
+  font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.85);
+  flex-shrink:0;display:flex;align-items:center;gap:28px;font-weight:400;
+}
+.ti::after{content:'✦';color:rgba(255,255,255,.4);font-size:8px;}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:40px;right:40px;z-index:9000;
+  background:var(--charcoal);color:white;padding:18px 28px;
+  font-size:13px;letter-spacing:.05em;border-left:3px solid var(--gold);
+  transform:translateY(100px);opacity:0;transition:all .4s;pointer-events:none;
+}
+#toast.show{transform:translateY(0);opacity:1;}
+
+/* ═══════════════════════════════════════════════
+   CORNER ORNAMENTS
+═══════════════════════════════════════════════ */
+.corner{position:fixed;z-index:600;pointer-events:none;opacity:0;animation:fadeUp .5s 2.5s forwards;}
+.c-tl{top:18px;left:18px;width:36px;height:36px;border-top:1px solid rgba(196,148,58,.35);border-left:1px solid rgba(196,148,58,.35);}
+.c-tr{top:18px;right:18px;width:36px;height:36px;border-top:1px solid rgba(196,148,58,.35);border-right:1px solid rgba(196,148,58,.35);}
+.c-bl{bottom:18px;left:18px;width:36px;height:36px;border-bottom:1px solid rgba(196,148,58,.35);border-left:1px solid rgba(196,148,58,.35);}
+.c-br{bottom:18px;right:18px;width:36px;height:36px;border-bottom:1px solid rgba(196,148,58,.35);border-right:1px solid rgba(196,148,58,.35);}
+
+/* ═══════════════════════════════════════════════
+   ADMIN PANEL — Modal overlay
+═══════════════════════════════════════════════ */
+#admin-overlay{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(42,35,24,.95);backdrop-filter:blur(8px);
+  display:none;opacity:0;transition:opacity .4s;
+}
+#admin-overlay.show{display:flex;opacity:1;}
+#admin-panel{
+  background:#FEFDFB;width:100%;max-width:1100px;margin:auto;
+  max-height:90vh;overflow-y:auto;position:relative;
+  display:flex;flex-direction:column;
+}
+.adm-header{
+  background:var(--charcoal);padding:28px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:2;
+}
+.adm-logo{font-family:'Playfair Display',serif;font-size:18px;color:white;font-weight:400;}
+.adm-logo span{font-size:10px;letter-spacing:.4em;color:var(--gold);display:block;margin-top:3px;font-family:'Jost',sans-serif;font-weight:300;}
+.adm-close{background:none;border:1px solid rgba(255,255,255,.2);color:white;width:38px;height:38px;cursor:pointer;font-size:18px;transition:all .3s;}
+.adm-close:hover{border-color:var(--gold);color:var(--gold-light);}
+.adm-tabs{display:flex;border-bottom:1px solid var(--border);background:white;padding:0 40px;gap:0;}
+.adm-tab{
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  padding:20px 24px;border:none;background:none;cursor:pointer;
+  color:var(--muted);border-bottom:2px solid transparent;transition:all .3s;
+  font-family:'Jost',sans-serif;margin-bottom:-1px;
+}
+.adm-tab.on{color:var(--gold);border-bottom-color:var(--gold);}
+.adm-body{padding:40px;flex:1;}
+.adm-section{display:none;}
+.adm-section.on{display:block;}
+
+/* Admin tables */
+.adm-section-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--charcoal);margin-bottom:24px;}
+.adm-table{width:100%;border-collapse:collapse;font-size:13px;}
+.adm-table th{background:var(--cream);padding:12px 16px;text-align:left;font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);font-weight:400;}
+.adm-table td{padding:14px 16px;border-bottom:1px solid var(--border);color:var(--charcoal);vertical-align:middle;}
+.adm-table tr:hover td{background:rgba(196,148,58,.03);}
+.adm-badge{
+  display:inline-block;font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  padding:4px 12px;border-radius:0;border:1px solid;
+}
+.adm-badge.pending{border-color:rgba(196,148,58,.4);color:var(--gold);}
+.adm-badge.confirmed{border-color:rgba(80,180,80,.4);color:#3a8a3a;}
+.adm-badge.cancelled{border-color:rgba(200,80,80,.4);color:#8a3a3a;}
+.adm-action{
+  background:none;border:1px solid var(--border);
+  color:var(--brown);padding:5px 12px;font-size:10px;cursor:pointer;
+  font-family:'Jost',sans-serif;transition:all .3s;letter-spacing:.1em;
+}
+.adm-action:hover{border-color:var(--gold);color:var(--gold);}
+.adm-action.danger{border-color:rgba(200,80,80,.3);color:#8a3a3a;}
+.adm-action.danger:hover{border-color:rgba(200,80,80,.6);}
+
+/* Admin forms */
+.adm-form{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.adm-form.single{grid-template-columns:1fr;}
+.af-g{display:flex;flex-direction:column;gap:6px;}
+.af-g label{font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);font-weight:400;}
+.af-g input,.af-g select,.af-g textarea{
+  border:1px solid var(--border);padding:12px 14px;
+  font-family:'Jost',sans-serif;font-size:13px;color:var(--charcoal);
+  outline:none;background:white;transition:border-color .3s;border-radius:0;
+}
+.af-g input:focus,.af-g select:focus,.af-g textarea:focus{border-color:var(--gold);}
+.af-g textarea{resize:vertical;min-height:80px;}
+.af-g.full{grid-column:span 2;}
+.adm-btn{
+  background:var(--gold);color:white;border:none;
+  padding:14px 32px;font-family:'Jost',sans-serif;font-size:10px;
+  letter-spacing:.3em;text-transform:uppercase;cursor:pointer;
+  transition:background .3s;font-weight:400;
+}
+.adm-btn:hover{background:var(--gold-dark);}
+.adm-divider{height:1px;background:var(--border);margin:36px 0;}
+
+/* Admin stats */
+.adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:36px;}
+.adm-stat{background:var(--cream);padding:24px;text-align:center;}
+.adm-stat-n{font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);font-weight:400;line-height:1;}
+.adm-stat-l{font-size:9px;letter-spacing:.35em;color:var(--muted);text-transform:uppercase;margin-top:6px;}
+
+/* Gallery admin grid */
+.gal-admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+.gal-a-item{position:relative;aspect-ratio:1;overflow:hidden;}
+.gal-a-item img,.gal-a-img{width:100%;height:100%;object-fit:cover;background-size:cover;background-position:center;}
+.gal-a-del{
+  position:absolute;top:8px;right:8px;background:rgba(200,60,60,.85);
+  color:white;border:none;width:28px;height:28px;cursor:pointer;font-size:14px;
+  opacity:0;transition:opacity .3s;
+}
+.gal-a-item:hover .gal-a-del{opacity:1;}
+.gal-upload{
+  aspect-ratio:1;border:2px dashed var(--border-strong);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .3s;color:var(--muted);font-size:12px;
+  gap:8px;
+}
+.gal-upload:hover{border-color:var(--gold);color:var(--gold);}
+.gal-upload-icon{font-size:28px;}
+
+/* Login screen */
+#admin-login{position:fixed;inset:0;z-index:9600;background:var(--charcoal);display:flex;align-items:center;justify-content:center;display:none;}
+#admin-login.show{display:flex;}
+.login-box{background:white;padding:64px;width:100%;max-width:420px;text-align:center;}
+.login-logo{font-family:'Playfair Display',serif;font-size:26px;color:var(--charcoal);margin-bottom:6px;}
+.login-sub{font-size:9px;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:40px;}
+.login-fg{margin-bottom:16px;text-align:left;}
+.login-fg label{font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px;}
+.login-fg input{
+  width:100%;border:1px solid var(--border);padding:14px 16px;
+  font-family:'Jost',sans-serif;font-size:14px;outline:none;border-radius:0;
+  transition:border-color .3s;
+}
+.login-fg input:focus{border-color:var(--gold);}
+.login-btn{
+  width:100%;background:var(--gold);color:white;border:none;padding:16px;
+  font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  cursor:pointer;margin-top:8px;transition:background .3s;
+}
+.login-btn:hover{background:var(--gold-dark);}
+.login-err{font-size:12px;color:#c0392b;margin-top:12px;display:none;}
+
+/* Menu admin */
+.menu-cats{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+.menu-cat-btn{
+  font-size:10px;letter-spacing:.25em;text-transform:uppercase;
+  border:1px solid var(--border);color:var(--muted);padding:8px 20px;
+  background:none;cursor:pointer;transition:all .3s;font-family:'Jost',sans-serif;
+}
+.menu-cat-btn.on{background:var(--gold);color:white;border-color:var(--gold);}
+.menu-items-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mi{background:var(--cream);padding:20px;display:flex;align-items:flex-start;gap:16px;justify-content:space-between;}
+.mi-info h4{font-size:14px;color:var(--charcoal);margin-bottom:4px;font-family:'Playfair Display',serif;font-weight:400;}
+.mi-info p{font-size:12px;color:var(--muted);}
+.mi-price{font-size:15px;color:var(--gold);font-family:'Playfair Display',serif;font-weight:400;white-space:nowrap;}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1024px){
+  #nav{padding:20px 32px;}
+  #nav.scrolled{padding:14px 32px;}
+  .nav-links{display:none;}
+  .about{grid-template-columns:1fr;padding:80px 40px;gap:60px;}
+  .about-imgs{height:420px;}
+  .venues-grid{grid-template-columns:1fr;grid-template-rows:auto;}
+  .venue-card:first-child{aspect-ratio:4/3;}
+  .services-grid{grid-template-columns:1fr 1fr;}
+  .wedding-grid{grid-template-columns:1fr;}
+  .wv-quote{display:none;}
+  .contact-inner{grid-template-columns:1fr;padding:80px 40px;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .about,.venues,.services,.events,.gallery,.testi,.contact,.location{padding-left:40px;padding-right:40px;}
+  .location{padding-left:40px;padding-right:40px;}
+  .loc-bar{grid-template-columns:1fr 1fr;}
+  footer{padding:60px 40px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .adm-form{grid-template-columns:1fr;}
+  .af-g.full{grid-column:span 1;}
+  .adm-stats{grid-template-columns:repeat(2,1fr);}
+  .gal-admin-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:768px){
+  .services-grid{grid-template-columns:1fr;}
+  .gallery-grid{display:flex;flex-direction:column;}
+  .gi{height:220px;}
+  .event{grid-template-columns:70px 1fr;gap:20px;padding:24px 20px;}
+  .event-tag{display:none;}
+  .footer-grid{grid-template-columns:1fr;}
+  .hero-ctas{flex-direction:column;align-items:center;}
+  .frow{grid-template-columns:1fr;}
+  .adm-stats{grid-template-columns:1fr 1fr;}
+  .menu-items-grid{grid-template-columns:1fr;}
+  .gal-admin-grid{grid-template-columns:repeat(2,1fr);}
+  .adm-tabs{overflow-x:auto;padding:0 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSORS -->
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- CORNER ORNAMENTS -->
+<div class="corner c-tl"></div>
+<div class="corner c-tr"></div>
+<div class="corner c-bl"></div>
+<div class="corner c-br"></div>
+
+
+
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav id="nav">
+  <a href="#" class="nav-brand">
+    <span class="nav-brand-main">Vavilon Sala</span>
+    <span class="nav-brand-sub">Čačak · Srbija</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#o-nama">O nama</a></li>
+    <li><a href="#prostori">Prostori</a></li>
+    <li><a href="#usluge">Usluge</a></li>
+    <li><a href="#svadbe">Svadbe</a></li>
+    <li><a href="#dogadjaji">Događaji</a></li>
+    <li><a href="#galerija">Galerija</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#kontakt" class="nav-reserve">Rezervacija</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="pocetna">
+  <video autoplay loop muted playsinline class="hero-vid">
+    <source src="hero-vid.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-kicker">Čačak · Srbija · Est. 2022</span>
+    <h1 class="hero-title"><em>Vavilon</em><br>Sala</h1>
+    <div class="hero-rule">
+      <div class="hr-line"></div>
+      <div class="hr-diamond"></div>
+      <div class="hr-line"></div>
+    </div>
+    <p class="hero-sub">Svadbe, proslave i muzički događaji — sve u elegantnom ambijentu koji pamtite zauvek.</p>
+    <div class="hero-ctas">
+      <a href="#kontakt" class="btn-gold">Rezervišite termin</a>
+      <a href="#prostori" class="btn-outline">Naši prostori</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span class="hs-label">Scroll</span>
+    <div class="hs-line"></div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats">
+  <div class="stat"><div class="stat-n" data-t="500">0</div><div class="stat-l">Gostiju · Sala</div></div>
+  <div class="stat"><div class="stat-n" data-t="1000">0</div><div class="stat-l">Gostiju · Garden</div></div>
+  <div class="stat"><div class="stat-n" data-t="187">0</div><div class="stat-l">Fotografija</div></div>
+  <div class="stat"><div class="stat-n" data-t="3897">0</div><div class="stat-l">Pratilaca</div></div>
+</div>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker">
+  <div class="ticker-t" id="ticker">
+    <div class="ti">Svadbe &amp; Venčanja</div>
+    <div class="ti">Slave &amp; Proslave</div>
+    <div class="ti">Muzička Veča</div>
+    <div class="ti">Poslovni Skupovi</div>
+    <div class="ti">Rodjendani</div>
+    <div class="ti">Maturske Večeri</div>
+    <div class="ti">Koktel Prijemi</div>
+    <div class="ti">Gala Večere</div>
+    <div class="ti">Svadbe &amp; Venčanja</div>
+    <div class="ti">Slave &amp; Proslave</div>
+    <div class="ti">Muzička Veča</div>
+    <div class="ti">Poslovni Skupovi</div>
+    <div class="ti">Rodjendani</div>
+    <div class="ti">Maturske Večeri</div>
+    <div class="ti">Koktel Prijemi</div>
+    <div class="ti">Gala Večere</div>
+  </div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="o-nama">
+  <div class="about">
+    <div class="about-imgs reveal">
+      <div class="about-img1"></div>
+      <div class="about-img2"></div>
+      <div class="about-badge"><span class="ab-year">22</span><span class="ab-est">Est.</span></div>
+    </div>
+    <div class="about-text">
+      <span class="section-tag reveal">O nama</span>
+      <h2 class="section-title reveal d1">Vaš <em>najvažniji</em><br>trenutak zaslužuje<br>poseban ambijent</h2>
+      <div class="section-rule reveal d2"></div>
+      <p class="reveal d2" style="margin-top:28px;"><strong>Vavilon Sala</strong> je prestižni event prostor u srcu Čačka, specijalizovan za organizaciju svadbi, slava, muzičkih večeri i poslovnih skupova.</p>
+      <p class="reveal d3">Od samog osnivanja, izgradili smo reputaciju <strong>savršene organizacije</strong> i neponovljivog ambijenta. Naš tim brine o svakom detalju — od dekoracije do gastronomije — kako bi vaš poseban trenutak ostao nezaboravan.</p>
+      <div class="about-features reveal d4">
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VENUES ═══ -->
+<section id="prostori" class="venues">
+  <div class="venues-inner">
+    <div class="section-header" style="text-align:center;">
+      <span class="section-tag reveal">Naši prostori</span>
+      <h2 class="section-title reveal d1">Prostori koji <em>odišu</em><br>elegancijom</h2>
+      <div class="section-rule reveal d2" style="margin:20px auto 0;"></div>
+    </div>
+    <div class="venues-grid reveal">
+      <div class="venue-card">
+        <div class="vc-img" style="background-image:url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=900&q=80');"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-info">
+          <div class="vc-name">Glavna Sala</div>
+          <div class="vc-cap">100 – 500 Gostiju</div>
+          <div class="vc-desc">Raskošna sala sa kristalnim lusternima, klima uređajem i modernom audio/video opremom. Idealna za svadbe i gala večere na najvišem nivou.</div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="vc-img" style="background-image:url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=700&q=80');"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-info">
+          <div class="vc-name">Garden</div>
+          <div class="vc-cap">100 – 1.000 Gostiju</div>
+          <div class="vc-desc">Prostrani otvoreni vrt za velike proslave pod vedrim nebom. Nezaboravna atmosfera za vaš specijalni dan.</div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="vc-img" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=700&q=80');"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-info">
+          <div class="vc-name">Muzička Scena</div>
+          <div class="vc-cap">Live nastupi</div>
+          <div class="vc-desc">Profesionalna bina sa vrhunskim zvučnim sistemom za muzička veča i specijalne nastupe.</div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="vc-img" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=80');"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-info">
+          <div class="vc-name">VIP Salon</div>
+          <div class="vc-cap">Privatni prostor</div>
+          <div class="vc-desc">Ekskluzivni privatni salon za poslovne sastanke i intimne proslave u potpunoj privatnosti.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="usluge" class="services">
+  <div class="services-inner">
+    <div style="text-align:center;">
+      <span class="section-tag reveal">Naše usluge</span>
+      <h2 class="section-title reveal d1">Sve što vam treba<br>za <em>savršen</em> dan</h2>
+      <div class="section-rule reveal d2" style="margin:20px auto 0;"></div>
+    </div>
+    <div class="services-grid">
+      <div class="svc reveal">
+        <span class="svc-num">01</span>
+        <span class="svc-icon">💍</span>
+        <div class="svc-n">Svadbe &amp; Venčanja</div>
+        <p class="svc-t">Kompletna organizacija vašeg vjenčanja — od dekoracije do menija. Naš tim brine o svakom detalju kako bi vaš veliki dan bio savršen i nezaboravan.</p>
+      </div>
+      <div class="svc reveal d1">
+        <span class="svc-num">02</span>
+        <span class="svc-icon">🕯️</span>
+        <div class="svc-n">Slave &amp; Proslave</div>
+        <p class="svc-t">Slave, rodjendani, maturske večeri i porodične proslave. Prilagođavamo sve po vašoj želji — meni, dekoracija, muzika i zabava.</p>
+      </div>
+      <div class="svc reveal d2">
+        <span class="svc-num">03</span>
+        <span class="svc-icon">🎵</span>
+        <div class="svc-n">Muzička Veča</div>
+        <p class="svc-t">Specijalni koncerti i muzička veča sa poznatim izvođačima. Nezaboravna atmosfera, vrhunski zvuk i profesionalna scenska oprema.</p>
+      </div>
+      <div class="svc reveal d1">
+        <span class="svc-num">04</span>
+        <span class="svc-icon">💼</span>
+        <div class="svc-n">Poslovni Eventi</div>
+        <p class="svc-t">Konferencije, promocije, poslovni ručkovi i koktel prijemi. Profesionalna usluga prilagođena korporativnim zahtevima.</p>
+      </div>
+      <div class="svc reveal d2">
+        <span class="svc-num">05</span>
+        <span class="svc-icon">🍽️</span>
+        <div class="svc-n">Gastronomija</div>
+        <p class="svc-t">Bogati meni srpske i internacionalne kuhinje. Iskusni kuvari pripremaju svako jelo sa pažnjom koristeći najsvežije sastojke.</p>
+      </div>
+      <div class="svc reveal d3">
+        <span class="svc-num">06</span>
+        <span class="svc-icon">🌸</span>
+        <div class="svc-n">Dekoracija &amp; Dizajn</div>
+        <p class="svc-t">Profesionalna dekoracija po vašem ukusu. Od elegantnih aranžmana do tematskih ukrasa — stvaramo ambijent koji odražava vašu ličnost.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WEDDINGS ═══ -->
+<section id="svadbe" class="wedding">
+  <div class="wedding-inner">
+    <div class="wedding-grid">
+      <div class="wedding-text">
+        <span class="section-tag reveal">Svadbe</span>
+        <h2 class="section-title reveal d1">Vaš savršen<br><em>dan za venčanje</em></h2>
+        <div class="section-rule reveal d2"></div>
+        <p class="reveal d2">Svadba je najvažniji dan u vašem životu i mi to znamo. Naš tim od profesionalnih event menadžera, kuvara i dekoratera radi zajedno kako bi stvorio savršeno venčanje koje ste uvek zamišljali.</p>
+        <p class="reveal d3">Od prvog razgovora do poslednjeg plesa — tu smo za vas na svakom koraku. Prilagođavamo svaki detalj vašim željama i budžetu, osiguravajući da vaš dan bude upravo onakav kakvim ste ga sanjali.</p>
+        <div class="wedding-packages reveal d4" id="wedding-pkgs">
+          <!-- filled by JS -->
+        </div>
+        <a href="#kontakt" class="btn-gold" style="display:inline-block;margin-top:32px;">Zakažite razgovor</a>
+      </div>
+      <div class="wedding-visual reveal d2">
+        <div class="wv-img1"></div>
+        <div class="wv-quote">
+          <p class="wv-q">"Svako venčanje je priča za sebe — pomažemo vam da ispričate svoju."</p>
+          <p class="wv-a">Tim Vavilon Sala</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EVENTS ═══ -->
+<section id="dogadjaji" class="events">
+  <div class="events-inner">
+    <div style="text-align:center;">
+      <span class="section-tag reveal">Predstojeći događaji</span>
+      <h2 class="section-title reveal d1">Specijalna<br><em>muzička</em> veča</h2>
+      <div class="section-rule reveal d2" style="margin:20px auto 0;"></div>
+    </div>
+    <div class="events-list" id="events-list">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="galerija" class="gallery">
+  <div class="gallery-inner">
+    <div style="text-align:center;">
+      <span class="section-tag reveal">Galerija</span>
+      <h2 class="section-title reveal d1">Prizori iz<br>našeg <em>sveta</em></h2>
+      <div class="section-rule reveal d2" style="margin:20px auto 0;"></div>
+    </div>
+    <div class="gallery-grid reveal" id="gallery-grid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testi">
+  <div class="testi-inner">
+    <div style="text-align:center;">
+      <span class="section-tag reveal">Recenzije</span>
+      <h2 class="section-title reveal d1">Reči naših<br><em>zadovoljnih</em> gostiju</h2>
+      <div class="section-rule reveal d2" style="margin:20px auto 0;"></div>
+    </div>
+    <div class="testi-slider reveal">
+      <div style="overflow:hidden;">
+        <div class="testi-track" id="testi-track">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <div class="testi-quote">"</div>
+            <p class="testi-text">Naše venčanje u Vavilon Sala bilo je magično. Sve je bilo savršeno organizovano, od dekoracije do hrane. Osoblje je bilo profesionalno i pažljivo prema svakom detalju. Najtoplija preporuka!</p>
+            <div class="testi-author">
+              <div class="ta-av">A</div>
+              <div><div class="ta-name">Ana &amp; Marko Petrović</div><div class="ta-meta">Venčanje · April 2025</div></div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <div class="testi-quote">"</div>
+            <p class="testi-text">Proslava mog 50. rodjendana bila je neverovatna. Garden prostor je bio fantastičan, muzika odlična a hrana ukusna. Gosti su oduševljeni. Hvala celom timu na predivnom domaćinstvu!</p>
+            <div class="testi-author">
+              <div class="ta-av">D</div>
+              <div><div class="ta-name">Dragana Nikolić</div><div class="ta-meta">Rodjendanska proslava · Mart 2025</div></div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <div class="testi-quote">"</div>
+            <p class="testi-text">Naša korporativna večera je protekla besprekorno. Prostor je elegantan, servis profesionalan a kulinarstvo na visokom nivou. Svakako ćemo ponovo odabrati Vavilon Sala za naše poslovne potrebe.</p>
+            <div class="testi-author">
+              <div class="ta-av">M</div>
+              <div><div class="ta-name">Milošević &amp; Partners</div><div class="ta-meta">Poslovni skup · Februar 2025</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-nav">
+        <div class="tn-dot on" onclick="goTesti(0)"></div>
+        <div class="tn-dot" onclick="goTesti(1)"></div>
+        <div class="tn-dot" onclick="goTesti(2)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ LOCATION ═══ -->
+<section class="location">
+  <div class="location-inner">
+    <div class="loc-bar reveal">
+      <div class="lb"><div class="lb-l">Grad</div><div class="lb-v">Čačak, Srbija</div></div>
+      <div class="lb"><div class="lb-l">Ulica</div><div class="lb-v">Braće Stanić 140</div></div>
+      <div class="lb"><div class="lb-l">Do centra</div><div class="lb-v">~3 km</div></div>
+      <div class="lb"><div class="lb-l">Parking</div><div class="lb-v">Besplatan · 200 mesta</div></div>
+    </div>
+    <div class="map-wrap reveal">
+      <div class="map-bg"></div>
+      <div class="map-grid-lines"></div>
+      <div class="map-pin-wrap">
+        <div class="map-pin">📍</div>
+        <div class="map-lbl">
+          <h3>Vavilon Sala</h3>
+          <p>Braće Stanić 140, Čačak</p>
+          <a href="https://maps.google.com/?q=Vavilon+Sala+Cacak" target="_blank">Otvori Google Maps →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-grid">
+    <div class="fb">
+      <h3>Vavilon Sala</h3>
+      <p>Luksuzni event prostor u Čačku za sve vaše posebne trenutke. Svadbe, proslave, muzička veča i poslovni skupovi na najvišem nivou.</p>
+      <div class="fb-social">
+        <a href="https://www.instagram.com/restoran_rajicic22_kod_luke/" class="fsoc" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="tel:0617230618" class="fsoc">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="fc">
+      <h4>Stranice</h4>
+      <ul>
+        <li><a href="#o-nama">O nama</a></li>
+        <li><a href="#prostori">Prostori</a></li>
+        <li><a href="#usluge">Usluge</a></li>
+        <li><a href="#svadbe">Svadbe</a></li>
+        <li><a href="#galerija">Galerija</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Usluge</h4>
+      <ul>
+        <li><a href="#usluge">Svadbe</a></li>
+        <li><a href="#usluge">Slave &amp; Proslave</a></li>
+        <li><a href="#usluge">Muzička Veča</a></li>
+        <li><a href="#usluge">Poslovni Skupovi</a></li>
+        <li><a href="#usluge">Dekoracija</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Kontakt</h4>
+      
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Vavilon Sala · Čačak · Sva prava zadržana</p>
+    <p>Napravljeno sa <span>♥</span> za posebne trenutke</p>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATA STORE — čita iz localStorage (isti kao admin)
+═══════════════════════════════════════════════ */
+const DB_KEY = 'rajicic_db';
+const DEFAULT_DB = {
+  bookings: [],
+  events: [
+    {id:1,title:'Božo i Repa & Jovana sa Pala — Specijalna Muzička Večer',date:'2025-05-21',type:'Muzička veče',loc:'Restoran Rajičić kod Luke',desc:'Specijalni gosti večeri'},
+    {id:2,title:'Gala Večera — Svečano Otvaranje Letnje Sezone',date:'2025-06-07',type:'Gala event',loc:'Garden terasa',desc:'Poseban meni i live muzika'},
+    {id:3,title:'Maturska Sezona 2025 — Nezaboravna Noć',date:'2025-06-15',type:'Maturska veče',loc:'Velika sala',desc:'Profesionalna fotografija i DJ nastup'},
+    {id:4,title:'Live Koncert — Iznenadni Nastup',date:'2025-06-28',type:'Koncert',loc:'Muzička scena',desc:'Detalji uskoro'},
+  ],
+  gallery: [
+    {id:1,url:'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=75'},
+    {id:2,url:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=75'},
+    {id:3,url:'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=75'},
+    {id:4,url:'https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=600&q=75'},
+    {id:5,url:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=75'},
+    {id:6,url:'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=75'},
+    {id:7,url:'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=75'},
+    {id:8,url:'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=600&q=75'},
+  ],
+  packages: [
+    {id:1,name:'Srebrni paket',cap:'100 – 200 gostiju',desc:'Sala, meni 3 course, nealkoholna pića, dekoracija',active:true},
+    {id:2,name:'Zlatni paket',cap:'200 – 500 gostiju',desc:'Sala + Garden, meni 5 course, sva pića, dekoracija, fotograf',active:true},
+    {id:3,name:'Platinasti paket',cap:'do 1000 gostiju',desc:'Ceo prostor, premium meni, open bar, dekoracija, fotograf, DJ/live bend',active:true},
+  ],
+  settings:{
+    name:'Restoran Rajičić kod Luke',
+    phone:'061 723 0618',
+    addr:'Braće Stanić 140, Čačak, Srbija',
+    ig:'@restoran_rajicic22_kod_luke',
+  },
+  nextId:100,
+  adminPass:'admin123'
+};
+
+function loadDB(){
+  try{
+    const s=localStorage.getItem(DB_KEY);
+    return s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULT_DB));
+  }catch(e){return JSON.parse(JSON.stringify(DEFAULT_DB));}
+}
+
+let DB = loadDB();
+
+/* ═══════════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════════ */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function ac(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cur2.style.left=rx+'px';cur2.style.top=ry+'px';requestAnimationFrame(ac);})();
+document.addEventListener('mouseover',e=>{if(e.target.matches('a,button,[onclick],.venue-card,.event,.svc,.gi'))cur2.classList.add('big');else cur2.classList.remove('big');});
+
+/* ═══════════════════════════════════════════════
+   NAV SCROLL
+═══════════════════════════════════════════════ */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
+
+/* ═══════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════ */
+const rio=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.08,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>rio.observe(el));
+
+/* ═══════════════════════════════════════════════
+   COUNTERS
+═══════════════════════════════════════════════ */
+const co=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){
+    const t=+e.target.dataset.t;
+    const s=performance.now();
+    (function up(now){
+      const p=Math.min((now-s)/2000,1),v=Math.floor((1-Math.pow(1-p,4))*t);
+      e.target.textContent=v>=1000?(v/1000).toFixed(1).replace('.',',')+' K':v;
+      if(p<1)requestAnimationFrame(up);else e.target.textContent=t>=1000?(t/1000).toFixed(0)+' K':t;
+    })(s);
+    co.unobserve(e.target);
+  }
+}),{threshold:.5});
+document.querySelectorAll('.stat-n[data-t]').forEach(el=>co.observe(el));
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════════ */
+let tcur=0;
+const ttrack=document.getElementById('testi-track');
+const tdots=document.querySelectorAll('.tn-dot');
+function goTesti(i){tcur=i;ttrack.style.transform=`translateX(${-i*100}%)`;tdots.forEach((d,j)=>d.classList.toggle('on',j===i));}
+setInterval(()=>goTesti((tcur+1)%3),6000);
+
+/* ═══════════════════════════════════════════════
+   HERO PARALLAX
+═══════════════════════════════════════════════ */
+window.addEventListener('scroll',()=>{
+  const s=scrollY,h=innerHeight;
+  const himg=document.querySelector('.hero-img');
+  if(himg&&s<h){himg.style.transform=`translateY(${s*.35}px)`;}
+  const hc=document.querySelector('.hero-content');
+  if(hc&&s<h){hc.style.opacity=1-s/(h*.7);hc.style.transform=`translateY(${s*.18}px)`;}
+});
+
+/* ═══════════════════════════════════════════════
+   GALLERY RENDER
+═══════════════════════════════════════════════ */
+const GALURLS=[
+  'https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=80',
+  'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80',
+  'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80',
+  'https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=600&q=80',
+  'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80',
+  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80',
+  'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80',
+  'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=600&q=80',
+];
+function renderGallery(){
+  const g=document.getElementById('gallery-grid');
+  g.innerHTML=DB.gallery.map(img=>`
+    <div class="gi">
+      <div class="gi-bg" style="background-image:url('${img.url}');"></div>
+      <div class="gi-veil"></div>
+      <div class="gi-plus">✦</div>
+    </div>`).join('');
+}
+renderGallery();
+
+/* ═══════════════════════════════════════════════
+   EVENTS RENDER
+═══════════════════════════════════════════════ */
+const MO=['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Avg','Sep','Okt','Nov','Dec'];
+function renderEvents(){
+  const el=document.getElementById('events-list');
+  el.innerHTML=DB.events.map(ev=>{
+    const d=new Date(ev.date);
+    return `<div class="event reveal">
+      <div class="event-d">
+        <div class="event-day">${d.getDate()}</div>
+        <div class="event-mo">${MO[d.getMonth()]} ${d.getFullYear()}</div>
+      </div>
+      <div>
+        <div class="event-h3">${ev.title}</div>
+        <p class="event-p">${ev.loc} · ${ev.desc}</p>
+      </div>
+      <div class="event-tag">${ev.type}</div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.event.reveal').forEach(el=>rio.observe(el));
+}
+renderEvents();
+
+/* ═══════════════════════════════════════════════
+   WEDDING PACKAGES RENDER
+═══════════════════════════════════════════════ */
+function renderWeddingPkgs(){
+  document.getElementById('wedding-pkgs').innerHTML=DB.packages.filter(p=>p.active).map(p=>`
+    <div class="wp" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">
+      <div><div class="wp-name">${p.name}</div><div class="wp-cap">${p.cap}</div></div>
+      <span class="wp-arrow">→</span>
+    </div>`).join('');
+}
+renderWeddingPkgs();
+
+/* ═══════════════════════════════════════════════
+   BOOKING FORM SUBMIT
+═══════════════════════════════════════════════ */
+function submitBooking(){
+  const name=document.getElementById('b-name').value.trim();
+  const phone=document.getElementById('b-phone').value.trim();
+  if(!name||!phone){showToast('Molimo unesite ime i telefon','error');return;}
+  DB.bookings.unshift({
+    id:++DB.nextId,
+    name,phone,
+    date:document.getElementById('b-date').value||'TBD',
+    type:document.getElementById('b-type').value||'Ostalo',
+    venue:document.getElementById('b-venue').value,
+    guests:document.getElementById('b-guests').value||'N/A',
+    note:document.getElementById('b-note').value,
+    status:'pending'
+  });
+  try{localStorage.setItem(DB_KEY,JSON.stringify(DB));}catch(e){}
+  ['b-name','b-phone','b-date','b-guests','b-note'].forEach(id=>document.getElementById(id).value='');
+  showToast('✓ Upit je uspešno poslat! Javićemo vam se uskoro.');
+}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.borderLeftColor=type==='error'?'#c0392b':'var(--gold)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — LOGIN
+═══════════════════════════════════════════════ */
+let adminLoggedIn=false;
+function openAdminLogin(e){
+  e.preventDefault();
+  if(adminLoggedIn){openAdmin();}
+  else{document.getElementById('admin-login').classList.add('show');}
+}
+function doLogin(){
+  const u=document.getElementById('l-user').value;
+  const p=document.getElementById('l-pass').value;
+  if(u==='admin'&&p===DB.adminPass){
+    adminLoggedIn=true;
+    document.getElementById('admin-login').classList.remove('show');
+    openAdmin();
+  }else{document.getElementById('l-err').style.display='block';}
+}
+function logoutAdmin(){adminLoggedIn=false;closeAdmin();showToast('Odjavljeni ste.');}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — PANEL
+═══════════════════════════════════════════════ */
+function openAdmin(){
+  const ov=document.getElementById('admin-overlay');
+  ov.style.display='flex';
+  requestAnimationFrame(()=>ov.style.opacity='1');
+  renderAdminDash();
+  renderAdminBookings();
+  renderAdminEvents();
+  renderAdminGallery();
+  renderAdminMenu();
+  renderAdminPackages();
+}
+function closeAdmin(){
+  const ov=document.getElementById('admin-overlay');
+  ov.style.opacity='0';
+  setTimeout(()=>ov.style.display='none',400);
+}
+
+function admTab(btn,sec){
+  document.querySelectorAll('.adm-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.adm-section').forEach(s=>s.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('adm-'+sec).classList.add('on');
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — DASHBOARD
+═══════════════════════════════════════════════ */
+function renderAdminDash(){
+  const pending=DB.bookings.filter(b=>b.status==='pending').length;
+  const conf=DB.bookings.filter(b=>b.status==='confirmed').length;
+  document.getElementById('ds-pending').textContent=pending;
+  document.getElementById('ds-conf').textContent=conf;
+  const body=document.getElementById('dash-bookings-body');
+  body.innerHTML=DB.bookings.slice(0,6).map(b=>`<tr>
+    <td><strong>${b.name}</strong></td>
+    <td>${formatDate(b.date)}</td>
+    <td>${b.type}</td>
+    <td>${b.guests}</td>
+    <td><span class="adm-badge ${b.status}">${statusLabel(b.status)}</span></td>
+    <td>
+      ${b.status==='pending'?`<button class="adm-action" onclick="changeStatus(${b.id},'confirmed')">Potvrdi</button> `:''}
+      <button class="adm-action danger" onclick="deleteBooking(${b.id})">Obriši</button>
+    </td>
+  </tr>`).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — BOOKINGS
+═══════════════════════════════════════════════ */
+function renderAdminBookings(){
+  const body=document.getElementById('bookings-body');
+  body.innerHTML=DB.bookings.map(b=>`<tr>
+    <td><strong>${b.name}</strong></td>
+    <td>${b.phone}</td>
+    <td>${formatDate(b.date)}</td>
+    <td>${b.type}</td>
+    <td>${b.venue}</td>
+    <td>${b.guests}</td>
+    <td><span class="adm-badge ${b.status}">${statusLabel(b.status)}</span></td>
+    <td>
+      ${b.status==='pending'?`<button class="adm-action" onclick="changeStatus(${b.id},'confirmed')">Potvrdi</button> `:''}
+      ${b.status==='confirmed'?`<button class="adm-action" onclick="changeStatus(${b.id},'cancelled')">Otkaži</button> `:''}
+      <button class="adm-action danger" onclick="deleteBooking(${b.id})">Obriši</button>
+    </td>
+  </tr>`).join('');
+}
+
+function changeStatus(id,status){
+  const b=DB.bookings.find(x=>x.id===id);
+  if(b){b.status=status;renderAdminDash();renderAdminBookings();showToast('Status ažuriran.');}
+}
+function deleteBooking(id){
+  if(confirm('Obrisati rezervaciju?')){DB.bookings=DB.bookings.filter(x=>x.id!==id);renderAdminDash();renderAdminBookings();showToast('Rezervacija obrisana.');}
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — EVENTS
+═══════════════════════════════════════════════ */
+function renderAdminEvents(){
+  const body=document.getElementById('events-body');
+  body.innerHTML=DB.events.map(ev=>`<tr>
+    <td>${formatDate(ev.date)}</td>
+    <td><strong>${ev.title}</strong></td>
+    <td>${ev.loc}</td>
+    <td>${ev.type}</td>
+    <td>
+      <button class="adm-action danger" onclick="deleteEvent(${ev.id})">Obriši</button>
+    </td>
+  </tr>`).join('');
+}
+function addEvent(){
+  const title=document.getElementById('ne-title').value.trim();
+  const date=document.getElementById('ne-date').value;
+  if(!title||!date){showToast('Naziv i datum su obavezni','error');return;}
+  DB.events.unshift({id:++DB.nextId,title,date,type:document.getElementById('ne-type').value,loc:document.getElementById('ne-loc').value||'Rajičić kod Luke',desc:document.getElementById('ne-desc').value});
+  ['ne-title','ne-date','ne-loc','ne-desc'].forEach(id=>document.getElementById(id).value='');
+  renderAdminEvents();renderEvents();showToast('Događaj dodat!');
+}
+function deleteEvent(id){
+  if(confirm('Obrisati događaj?')){DB.events=DB.events.filter(x=>x.id!==id);renderAdminEvents();renderEvents();showToast('Događaj obrisan.');}
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — GALLERY
+═══════════════════════════════════════════════ */
+function renderAdminGallery(){
+  const g=document.getElementById('gal-grid');
+  g.innerHTML=DB.gallery.map(img=>`
+    <div class="gal-a-item">
+      <div class="gal-a-img" style="background:url('${img.url}') center/cover;height:100%;"></div>
+      <button class="gal-a-del" onclick="deleteGalImg(${img.id})">✕</button>
+    </div>`).join('')+`
+    <div class="gal-upload" onclick="addGalImg()">
+      <span class="gal-upload-icon">+</span>
+      <span>Dodaj sliku</span>
+    </div>`;
+}
+const EXTRA_IMGS=[
+  'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=75',
+  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=75',
+  'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600&q=75',
+  'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=600&q=75',
+  'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=75',
+];
+let extraIdx=0;
+function addGalImg(){
+  const url=EXTRA_IMGS[extraIdx%EXTRA_IMGS.length];extraIdx++;
+  DB.gallery.push({id:++DB.nextId,url});
+  renderAdminGallery();renderGallery();showToast('Slika dodata!');
+}
+function deleteGalImg(id){
+  DB.gallery=DB.gallery.filter(x=>x.id!==id);
+  renderAdminGallery();renderGallery();showToast('Slika obrisana.');
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — MENU
+═══════════════════════════════════════════════ */
+let menuFilter='sve';
+function menuCat(btn,cat){
+  menuFilter=cat;
+  document.querySelectorAll('.menu-cat-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderAdminMenu();
+}
+function renderAdminMenu(){
+  const items=menuFilter==='sve'?DB.menu:DB.menu.filter(m=>m.cat===menuFilter);
+  document.getElementById('menu-grid').innerHTML=items.map(m=>`
+    <div class="mi">
+      <div class="mi-info"><h4>${m.name}</h4><p>${m.desc}</p></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+        <div class="mi-price">${catLabel(m.cat)}</div>
+        <button class="adm-action danger" onclick="deleteMenuItem(${m.id})">Obriši</button>
+      </div>
+    </div>`).join('');
+}
+function addMenuItem(){
+  const name=document.getElementById('mi-name').value.trim();
+  if(!name){showToast('Naziv je obavezan','error');return;}
+  DB.menu.push({id:++DB.nextId,name,cat:document.getElementById('mi-cat').value,desc:document.getElementById('mi-desc').value});
+  document.getElementById('mi-name').value='';document.getElementById('mi-desc').value='';
+  renderAdminMenu();showToast('Stavka dodata!');
+}
+function deleteMenuItem(id){DB.menu=DB.menu.filter(x=>x.id!==id);renderAdminMenu();showToast('Stavka obrisana.');}
+function catLabel(c){const m={predjela:'Predjelo',glavna:'Glavno jelo',dezert:'Desert',pice:'Piće'};return m[c]||c;}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — PACKAGES
+═══════════════════════════════════════════════ */
+function renderAdminPackages(){
+  const body=document.getElementById('packages-body');
+  body.innerHTML=DB.packages.map(p=>`<tr>
+    <td><strong>${p.name}</strong></td>
+    <td>${p.cap}</td>
+    <td>${p.desc}</td>
+    <td>${p.active?'✅':'❌'}</td>
+    <td>
+      <button class="adm-action" onclick="togglePkg(${p.id})">${p.active?'Deaktiviraj':'Aktiviraj'}</button>
+      <button class="adm-action danger" onclick="deletePkg(${p.id})">Obriši</button>
+    </td>
+  </tr>`).join('');
+}
+function addPackage(){
+  const name=document.getElementById('np-name').value.trim();
+  if(!name){showToast('Naziv je obavezan','error');return;}
+  DB.packages.push({id:++DB.nextId,name,cap:document.getElementById('np-cap').value,desc:document.getElementById('np-desc').value,active:true});
+  document.getElementById('np-name').value='';document.getElementById('np-cap').value='';document.getElementById('np-desc').value='';
+  renderAdminPackages();renderWeddingPkgs();showToast('Paket dodat!');
+}
+function togglePkg(id){const p=DB.packages.find(x=>x.id===id);if(p){p.active=!p.active;renderAdminPackages();renderWeddingPkgs();}}
+function deletePkg(id){if(confirm('Obrisati paket?')){DB.packages=DB.packages.filter(x=>x.id!==id);renderAdminPackages();renderWeddingPkgs();showToast('Paket obrisan.');}}
+
+/* ═══════════════════════════════════════════════
+   ADMIN — SETTINGS
+═══════════════════════════════════════════════ */
+function saveSettings(){
+  DB.settings.name=document.getElementById('s-name').value;
+  DB.settings.phone=document.getElementById('s-phone').value;
+  DB.settings.addr=document.getElementById('s-addr').value;
+  DB.settings.ig=document.getElementById('s-ig').value;
+  DB.settings.cap1=document.getElementById('s-cap1').value;
+  DB.settings.cap2=document.getElementById('s-cap2').value;
+  DB.settings.hours=document.getElementById('s-hours').value;
+  DB.settings.hero=document.getElementById('s-hero').value;
+  document.querySelector('.hero-sub').textContent=DB.settings.hero;
+  showToast('Podešavanja sačuvana!');
+}
+function savePass(){
+  const p1=document.getElementById('s-pass').value;
+  const p2=document.getElementById('s-pass2').value;
+  if(!p1){showToast('Unesite novu lozinku','error');return;}
+  if(p1!==p2){showToast('Lozinke se ne podudaraju','error');return;}
+  DB.adminPass=p1;showToast('Lozinka promenjena!');
+}
+
+/* ═══════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════ */
+function formatDate(d){if(d==='TBD')return 'TBD';const dt=new Date(d);return `${dt.getDate()}. ${MO[dt.getMonth()]} ${dt.getFullYear()}`;}
+function statusLabel(s){const m={pending:'Na čekanju',confirmed:'Potvrđeno',cancelled:'Otkazano'};return m[s]||s;}
+
+// Close overlay on background click
+document.getElementById('admin-overlay').addEventListener('click',function(e){if(e.target===this)closeAdmin();});
+document.getElementById('admin-login').addEventListener('click',function(e){if(e.target===this)this.classList.remove('show');});
+</script>
+</body>
+</html>
